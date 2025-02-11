@@ -4,13 +4,13 @@ import random
 
 # Biến đếm toàn cục
 counter = 0
-lock = threading.Lock()  # Dùng Lock để tránh race condition
+# Đã loại bỏ lock để gây lỗi race condition
 
 def increment_counter(limit):
     global counter
     for _ in range(limit):
-        with lock:
-            counter += 1
+        # Không dùng lock, dễ gây race condition
+        counter += 1
 
 def start_counting():
     global counter
@@ -31,11 +31,11 @@ def start_counting():
     thread2.join()
 
     # Cập nhật giao diện với kết quả cuối cùng
-    label_result.config(text=f"Counter: {counter}")
+    label_result.config(text=f"Counter: {counter} ")
 
 # Tạo giao diện với Tkinter
 root = tk.Tk()
-root.title("Randomized Counter Example")
+root.title("Race Condition Example")
 
 btn_start = tk.Button(root, text="Start Counting", command=start_counting)
 btn_start.pack(pady=10)
